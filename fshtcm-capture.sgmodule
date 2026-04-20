@@ -1,0 +1,10 @@
+#!name=FSHTCM WeChat H5 Capture
+#!desc=Capture wx.fshtcm.com.cn hospital H5 requests for Surge logs
+#!system=ios
+
+[MITM]
+hostname = wx.fshtcm.com.cn, open.weixin.qq.com
+
+[Script]
+FSHTCM Request = type=http-request, pattern=^https:\/\/(wx\.fshtcm\.com\.cn\/pat-web\/s\/.*|open\.weixin\.qq\.com\/connect\/oauth2\/authorize.*), requires-body=1, max-size=0, script-path=fshtcm-capture.js
+FSHTCM Response = type=http-response, pattern=^https:\/\/wx\.fshtcm\.com\.cn\/pat-web\/s\/.*, requires-body=1, max-size=0, script-path=fshtcm-capture.js
