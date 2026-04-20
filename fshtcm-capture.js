@@ -59,16 +59,21 @@ function saveLog(entry) {
   $persistentStore.write(JSON.stringify(logs.slice(0, LIMIT)), STORE_KEY);
 }
 
+function getHeader(headers, name) {
+  if (!headers) return "";
+  return headers[name] || headers[name.toLowerCase()] || "";
+}
+
 function main() {
   const isResponse = typeof $response !== "undefined";
-  const req = $request || {};
-  const res = $response || {};
+  const req = typeof $request !== "undefined" ? $request : {};
+  const res = isResponse ? $response : {};
   const url = req.url || "";
   const method = req.method || "GET";
   const reqHeaders = pickHeaders(req.headers || {});
   const resHeaders = pickHeaders(res.headers || {});
-  const reqType = req.headers?.["Content-Type"] || req.headers?.["content-type"] || "";
-  const resType = res.headers?.["Content-Type"] || res.headers?.["content-type"] || "";
+  const reqType = getHeader(req.headers || {}, "Content-Type");
+  const resType = getHeader(res.headers || {}, "Content-Type");
 
   const entry = {
     time: new Date().toISOString(),
